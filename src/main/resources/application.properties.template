@@ -1,0 +1,16 @@
+spring.application.name=BunkMate
+
+# Database Configuration
+spring.datasource.username=YOUR_DB_USERNAME
+spring.datasource.password=YOUR_DB_PASSWORD
+spring.datasource.url=jdbc:postgresql://localhost:5432/YOUR_DB_NAME
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+
+# JWT Configuration
+jwt.secret.key=YOUR_JWT_SECRET_KEY_HERE
+
+# Spring Security Configuration
+spring.security.user.name=YOUR_ADMIN_USERNAME
+spring.security.user.password=YOUR_ADMIN_PASSWORD
