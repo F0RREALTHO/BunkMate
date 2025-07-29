@@ -51,11 +51,19 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
+        // Allow frontend URLs
+        configuration.setAllowedOriginPatterns(Arrays.asList(
+                "http://localhost:5173",  // Vite dev server
+                "http://localhost:3000",  // Alternative dev port
+                "https://yourdomain.com"  // Production URL
+        ));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE"));
-        configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+        configuration.setAllowedHeaders(Arrays.asList(
+                "Authorization", "Content-Type", "X-Requested-With"
+        ));
+        configuration.setAllowCredentials(true);
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", configuration);
+        source.registerCorsConfiguration("/api/**", configuration);
         return source;
     }
 
