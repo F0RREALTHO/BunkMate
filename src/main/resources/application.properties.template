@@ -1,8 +1,6 @@
 spring.application.name=BunkMate
 
 # Database Configuration
-spring.datasource.username=YOUR_DB_USERNAME
-spring.datasource.password=YOUR_DB_PASSWORD
 spring.datasource.url=jdbc:postgresql://localhost:5432/YOUR_DB_NAME
 spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.PostgreSQLDialect
 spring.jpa.hibernate.ddl-auto=update
