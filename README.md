@@ -18,7 +18,7 @@ BunkMate is a RESTful Spring Boot-based backend application that helps students 
 
 ## 🔗 Base URL
 
-http://localhost:8080
+https://bunksy.netlify.app/
 
 
 ---
