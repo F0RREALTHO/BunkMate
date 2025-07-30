@@ -39,25 +39,24 @@ public class StudentController {
 
     @PostMapping("/student")
     public ResponseEntity<?> registerStudent(@RequestBody Student student) {
-        try{
+        try {
             Student registeredStudent = studentService.registerUser(student);
-            return new ResponseEntity<>(registeredStudent, HttpStatus.OK);
-        }catch (IllegalStateException e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.CONFLICT);
+            return new ResponseEntity<>(Map.of("message", "Student registered successfully"), HttpStatus.CREATED);
+        } catch (IllegalStateException e) {
+            return new ResponseEntity<>(Map.of("error", e.getMessage()), HttpStatus.CONFLICT);
         }
     }
 
     @PostMapping("/student/login")
-    public ResponseEntity<?> login(@RequestBody Student student) { // Changed return type here
+    public ResponseEntity<?> login(@RequestBody Student student) {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(student.getName(), student.getPassword())
             );
             String token = jwtService.generateToken(student.getName());
-            System.out.println(token);
+//            System.out.println(token);
             return ResponseEntity.ok(Map.of("token", token));
         } catch (Exception e) {
-            // It's better to return a Map here too for consistency
             return new ResponseEntity<>(Map.of("error", "Invalid username or password"), HttpStatus.UNAUTHORIZED);
         }
     }
@@ -66,9 +65,9 @@ public class StudentController {
     public ResponseEntity<?> addSubject(@PathVariable String studentName, @RequestBody Subject subjectDta) {
         try{
             Student updatedStudent = studentService.addSubject(studentName,subjectDta);
-            return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
+            return new ResponseEntity<>(updatedStudent.getSubjects(), HttpStatus.OK);
         }catch (IllegalStateException e){
-            return new ResponseEntity<>("User Not Found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User/Subject Not Found", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -76,7 +75,7 @@ public class StudentController {
     public ResponseEntity<?> deleteSubject(@PathVariable String studentName, @PathVariable String subjectName) {
         try {
             Student updatedStudent = studentService.deleteSubject(studentName,subjectName);
-            return new ResponseEntity<>(updatedStudent, HttpStatus.OK);
+            return new ResponseEntity<>(updatedStudent.getSubjects(), HttpStatus.OK);
         }catch (IllegalStateException e){
             return new ResponseEntity<>("User/Subject Not Found", HttpStatus.NOT_FOUND);
         }
@@ -98,7 +97,7 @@ public class StudentController {
             Subject updatedSubject = studentService.updateAttendance(studentName,subjectName,-1,0);
             return new ResponseEntity<>(updatedSubject, HttpStatus.OK);
         }catch (IllegalStateException e){
-            return new ResponseEntity<>("User Not Found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User/Subject Not Found", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -108,7 +107,7 @@ public class StudentController {
             Subject updatedSubject = studentService.updateAttendance(studentName,subjectName,0,1);
             return new ResponseEntity<>(updatedSubject, HttpStatus.OK);
         }catch (IllegalStateException e){
-            return new ResponseEntity<>("User Not Found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User/Subject Not Found", HttpStatus.NOT_FOUND);
         }
     }
 
@@ -118,7 +117,7 @@ public class StudentController {
             Subject updatedSubject = studentService.updateAttendance(studentName,subjectName,0,-1);
             return new ResponseEntity<>(updatedSubject, HttpStatus.OK);
         }catch (IllegalStateException e){
-            return new ResponseEntity<>("User Not Found", HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User/Subject Not Found", HttpStatus.NOT_FOUND);
         }
     }
 
