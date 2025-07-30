@@ -55,7 +55,7 @@ public class SecurityConfig {
         configuration.setAllowedOriginPatterns(Arrays.asList(
                 "http://localhost:5173",  // Vite dev server
                 "http://localhost:3000",  // Alternative dev port
-                "https://yourdomain.com"  // Production URL
+                "https://bunksy.netlify.app"  // Production URL
         ));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(Arrays.asList(
