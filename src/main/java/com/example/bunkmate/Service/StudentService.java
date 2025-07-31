@@ -12,6 +12,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -119,5 +121,12 @@ public class StudentService {
     public Student getStudent(String studentName) {
         return studentRepo.findByName(studentName)
                 .orElseThrow(()-> new IllegalStateException("User with name " + studentName + " does not exist"));
+    }
+
+    public Student deleteStudent(String studentName) {
+        Student student = studentRepo.findByName(studentName)
+                .orElseThrow(()-> new IllegalStateException("User with name " + studentName + " does not exist"));
+        studentRepo.delete(student);
+        return student;
     }
 }

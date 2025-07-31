@@ -81,6 +81,22 @@ public class StudentController {
         }
     }
 
+    @DeleteMapping("/student/{studentName}")
+    public ResponseEntity<?> deleteStudent(@PathVariable String studentName) {
+        try {
+            Student deletedStudent = studentService.deleteStudent(studentName);
+            return new ResponseEntity<>(Map.of(
+                    "message", "Student deleted successfully",
+                    "deletedStudent", deletedStudent.getName()
+            ), HttpStatus.OK
+            );
+        }catch (IllegalStateException e){
+            return new ResponseEntity<>(Map.of
+                    ("error", "User/Student Not Found"),
+                    HttpStatus.NOT_FOUND);
+        }
+    }
+
     @PutMapping("/student/{studentName}/subject/{subjectName}/attended/inc")
     public ResponseEntity<?> increaseAttendance(@PathVariable String studentName, @PathVariable String subjectName) {
         try{
