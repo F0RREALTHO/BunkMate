@@ -35,8 +35,11 @@ public class JwtFilter extends OncePerRequestFilter {
 
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        String requestUri = request.getRequestURI();
+        System.out.println("Request URI: " + requestUri);// debugging
+
         return publicPaths.stream()
-                .anyMatch(path -> request.getRequestURI().equals(path));
+                .anyMatch(path -> requestUri.startsWith(path) && (requestUri.length() == path.length() || requestUri.charAt(path.length()) == '/'));
     }
 
     @Override
