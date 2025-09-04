@@ -15,6 +15,8 @@ import org.springframework.web.context.request.ServletWebRequest;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -25,6 +27,17 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private StudentDetailService studentDetailService;
 
+    private final List<String> publicPaths = Arrays.asList(
+            "/api/student",
+            "/api/student/login",
+            "/api/health"
+    );
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
+        return publicPaths.stream()
+                .anyMatch(path -> request.getRequestURI().equals(path));
+    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
