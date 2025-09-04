@@ -5,7 +5,6 @@ import com.example.bunkmate.Service.StudentDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -41,11 +40,10 @@ public class SecurityConfig {
                 .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(HttpMethod.POST, "/api/student", "/api/student/login").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/api/health").permitAll()
+                        .requestMatchers("/api/student", "/api/student/login","/api/health").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authenticationProvider(authenticationProvider())
+                .authenticationProvider(authenticationProvider()) // ADDED: Register the authentication provider
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
@@ -53,10 +51,11 @@ public class SecurityConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        // Allow frontend URLs
         configuration.setAllowedOriginPatterns(Arrays.asList(
-                "http://localhost:5173",
-                "http://localhost:3000",
-                "https://bunksy.netlify.app",
+                "http://localhost:5173",  // Vite dev server
+                "http://localhost:3000",  // Alternative dev port
+                "https://bunksy.netlify.app", // Production URL
                 "https://bunksy.vercel.app/"
         ));
         configuration.setAllowedMethods(Arrays.asList("GET","POST", "PUT", "DELETE"));
