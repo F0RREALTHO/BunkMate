@@ -1,0 +1,3 @@
+api.bunkmate.app {
+    reverse_proxy bunkmate-api:8080
+}
