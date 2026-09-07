@@ -12,6 +12,7 @@ services:
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET}
       - FRONTEND_URL=${FRONTEND_URL}
+      - JAVA_TOOL_OPTIONS=-Xmx256m -Xms256m
 
   caddy:
     image: caddy:latest
