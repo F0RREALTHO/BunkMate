@@ -1,0 +1,364 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  width: 100%;
+}
+
+/* Left Brand Panel */
+.brandPanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-10) var(--space-5) var(--space-6) var(--space-5);
+  text-align: center;
+  position: relative;
+}
+
+.logoImage {
+  width: 140px;
+  height: auto;
+  margin-bottom: var(--space-6);
+  z-index: 2;
+}
+
+.heroText {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: var(--space-2);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  z-index: 2;
+}
+
+.subHeroText {
+  font-size: 1rem;
+  color: #85858D;
+  max-width: 300px;
+  line-height: 1.4;
+  z-index: 2;
+}
+
+/* Decorative chalk animation container */
+.chalkVisual {
+  margin-top: var(--space-16);
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  color: rgba(255, 255, 255, 0.2);
+  z-index: 1;
+  pointer-events: none;
+  display: none; /* Hidden on mobile */
+}
+
+.chalkRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  font-size: 1.5rem;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.05em;
+}
+
+.chalkLabel {
+  font-size: 0.875rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: var(--space-2);
+  opacity: 0.6;
+}
+
+/* Right Form Panel */
+.formPanel {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--space-6) var(--space-5) var(--space-10) var(--space-5);
+  flex: 1;
+}
+
+.formWrapper {
+  width: 100%;
+  max-width: 380px;
+  display: flex;
+  flex-direction: column;
+}
+
+.formHeader {
+  margin-bottom: var(--space-6);
+}
+
+.formTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  margin-bottom: 2px;
+}
+
+.formSubtitle {
+  font-size: 0.875rem;
+  color: #85858D;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.oauthContainer {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.googleBtn {
+  height: 48px;
+  background: #1A1A1D; /* Match input surface */
+  color: #FFFFFF;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  transition: filter var(--transition-fast), transform var(--transition-fast), background var(--transition-fast), border-color var(--transition-fast);
+}
+
+.googleBtn:hover {
+  background: #25252A;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.googleBtn:active {
+  transform: scale(0.98);
+}
+
+.googleBtn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.05);
+}
+
+.googleIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  text-align: center;
+  color: #85858D;
+  font-size: 0.8125rem;
+  margin: var(--space-2) 0;
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.divider span {
+  padding: 0 var(--space-4);
+}
+
+.inputGroup {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.inputWrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.input {
+  width: 100%;
+  padding: 16px;
+  background: #1A1A1D;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  font-size: 1rem;
+  color: #FFFFFF;
+  outline: none;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+
+.input:focus {
+  border-color: rgba(255, 255, 255, 0.25);
+  background: #1E1E22;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, 0.02);
+}
+
+.input::placeholder {
+  color: transparent;
+}
+
+.label {
+  position: absolute;
+  left: 16px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  color: #85858D;
+  pointer-events: none;
+  transition: transform 0.2s ease, font-size 0.2s ease, color 0.2s ease, top 0.2s ease;
+}
+
+/* Floating label state */
+.input:focus ~ .label,
+.input:not(:placeholder-shown) ~ .label {
+  top: -8px;
+  left: 12px;
+  font-size: 0.75rem;
+  color: #FFFFFF;
+  background: #0D0D0F; /* Matches global bg */
+  padding: 0 6px;
+  transform: translateY(0);
+}
+
+.passwordToggle {
+  position: absolute;
+  right: 12px;
+  background: transparent;
+  border: none;
+  color: #85858D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 50%;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.passwordToggle:hover {
+  color: #FFFFFF;
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.inlineError {
+  margin-top: 8px;
+  font-size: 0.8125rem;
+  color: #FCA5A5;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.submitBtn {
+  height: 48px;
+  background: #E8E8E6; /* Off-white premium button */
+  color: #0D0D0F;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: filter var(--transition-fast), transform var(--transition-fast), background var(--transition-fast), color var(--transition-fast);
+  margin-top: var(--space-2);
+}
+
+.submitBtn:hover:not(:disabled) {
+  background: #FFFFFF;
+}
+
+.submitBtn:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.submitBtn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* Success state override */
+.submitBtn.success {
+  background: #86EFAC; /* muted mint */
+  color: #0D0D0F;
+}
+
+.footer {
+  text-align: center;
+  margin-top: var(--space-8);
+  font-size: 0.875rem;
+  color: #85858D;
+}
+
+.footer a {
+  color: #FFFFFF;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--transition-fast);
+  margin-left: 4px;
+}
+
+.footer a:hover {
+  text-decoration: underline;
+}
+
+/* Desktop Breakpoint */
+@media (min-width: 1024px) {
+  .page {
+    flex-direction: row;
+    align-items: stretch;
+  }
+
+  .brandPanel {
+    width: 55%;
+    border-right: 1px solid rgba(255, 255, 255, 0.03);
+    padding: var(--space-16);
+  }
+  
+  .brandPanel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 0%, rgba(13,13,15,0.4) 100%);
+    pointer-events: none;
+  }
+
+  .formPanel {
+    width: 45%;
+    padding: var(--space-16);
+    align-items: center; /* Center vertically on desktop */
+  }
+
+  .formWrapper {
+    max-width: 420px;
+  }
+
+  .logoImage {
+    width: 180px;
+  }
+
+  .heroText {
+    font-size: 3rem;
+  }
+
+  .subHeroText {
+    font-size: 1.125rem;
+    max-width: 400px;
+  }
+  
+  .chalkVisual {
+    display: flex;
+  }
+}

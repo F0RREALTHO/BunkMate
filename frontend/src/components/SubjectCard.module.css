@@ -1,0 +1,210 @@
+.card {
+  position: relative;
+  background: #1A1A1D; /* Darker, slightly warm charcoal */
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  border-radius: 28px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: transform var(--transition-base), box-shadow var(--transition-base);
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Clickable Content Area */
+.content {
+  background: transparent;
+  border: none;
+  text-align: left;
+  padding: var(--space-6);
+  padding-bottom: var(--space-4);
+  cursor: pointer;
+  outline: none;
+  width: 100%;
+}
+
+/* Top Row: Info & Percentage */
+.topRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--space-5);
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  padding-right: var(--space-4);
+}
+
+.name {
+  font-size: 1.25rem; /* ~20px */
+  font-weight: 700;
+  color: #FFFFFF;
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+
+.code {
+  font-size: 0.875rem; /* ~14px */
+  color: #85858D;
+  font-weight: 500;
+}
+
+/* Percentage & Chalk Dust */
+.pctWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  position: relative;
+}
+
+.pct {
+  font-size: 2.25rem; /* ~36px */
+  font-weight: 700;
+  color: #FFFFFF;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+  position: relative;
+  z-index: 2;
+}
+
+.chalkDustContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background-color: var(--color-text-primary);
+  border-radius: 50%;
+  opacity: 0.6;
+  filter: blur(0.5px);
+}
+
+/* Decision Callout */
+.decision {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.decisionValue {
+  font-size: 1.125rem;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.decisionLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* Status variants for decision text */
+.isSafe .decisionValue {
+  color: #86EFAC; /* bright muted green */
+}
+.isSafe .decisionLabel {
+  color: #6EE7B7;
+  opacity: 0.8;
+}
+
+.isWarning .decisionValue {
+  color: #FDE047;
+}
+.isWarning .decisionLabel {
+  color: #FEF08A;
+  opacity: 0.8;
+}
+
+.isDanger .decisionValue {
+  color: #FCA5A5; /* coral/red */
+}
+.isDanger .decisionLabel {
+  color: #FECACA;
+  opacity: 0.8;
+}
+
+/* Bottom Row: Ratio & Toggle */
+.bottomRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 0 var(--space-6) var(--space-6) var(--space-6);
+}
+
+.ratio {
+  font-size: 0.875rem;
+  color: #85858D;
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+  padding-bottom: 6px;
+}
+
+/* Signature Toggle Control */
+.toggle {
+  display: flex;
+  align-items: center;
+  background: #252529; /* Dark pill background */
+  border-radius: 30px;
+  padding: 4px;
+  gap: 4px;
+}
+
+.btnMinus, .btnPlus {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition-fast), transform var(--transition-fast), opacity var(--transition-fast);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btnMinus {
+  background: transparent;
+  color: #85858D;
+}
+
+.btnMinus:hover:not(:disabled) {
+  background: rgba(255, 255, 255, 0.05);
+  color: #FFFFFF;
+}
+
+.btnPlus {
+  background: #F3F3F1;
+  color: #000000;
+}
+
+.btnPlus:hover:not(:disabled) {
+  background: #FFFFFF;
+  transform: scale(1.05);
+}
+
+.btnMinus:disabled, .btnPlus:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Desktop */
+@media (min-width: 768px) {
+  .pct {
+    font-size: 2.5rem; /* 40px */
+  }
+}

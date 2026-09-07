@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: attendance-manager
+
+  datasource:
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/attendance_manager}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:Rasu@5120057}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: true
+
+  jackson:
+    default-property-inclusion: non_null
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:placeholder}
+            client-secret: ${GOOGLE_CLIENT_SECRET:placeholder}
+            scope:
+              - email
+              - profile
+
+server:
+  port: 8080
+
+app:
+  frontend:
+    url: ${FRONTEND_URL:http://localhost:5173}
+  jwt:
+    secret: ${APP_JWT_SECRET:YTJiNGM2ZDhmMTIzNDU2Nzg5MGFiY2RlZjAxMjM0NTY3ODkwYWJjZGVmMDEyMzQ1Njc4OTBhYmNkZWYwMTIzNDU2}
+    expiration-ms: 86400000  # 24 hours
+
+  # Rate Limiting
+  rate-limit:
+    user:
+      max-requests: 20
+      window-seconds: 60
+    subject:
+      max-requests: 5
+      window-seconds: 10
