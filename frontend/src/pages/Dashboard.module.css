@@ -1,12 +1,14 @@
 .page {
   min-height: 100dvh;
   padding-bottom: env(safe-area-inset-bottom, 0);
+  overflow-x: hidden;
+  width: 100%;
 }
 
 .container {
   max-width: var(--max-content-width);
   margin: 0 auto;
-  padding: var(--space-6) var(--space-5);
+  padding: var(--space-6) var(--space-4) var(--space-16) var(--space-4);
 }
 
 /* Header */
@@ -21,7 +23,7 @@
 .headerContent {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 8px;
 }
 
 .greeting {
@@ -36,7 +38,7 @@
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 4px;
+  gap: 8px;
   color: #85858D;
   font-size: 0.875rem; /* ~14px */
 }
@@ -83,7 +85,6 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-4);
-  padding-bottom: var(--space-16);
 }
 
 /* Add Subject Ghost Card */
@@ -175,3 +176,182 @@
   }
 }
 
+/* Time & Date Display */
+.timeWrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.timeText {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.timeIcon {
+  opacity: 0.8;
+}
+
+/* Controls Bar */
+.controlsBar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--space-4);
+}
+
+.controlsTitle {
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+/* Calendar Section */
+.calendarSection {
+  margin-top: var(--space-8);
+  padding-top: var(--space-8);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: var(--space-4);
+  color: var(--color-text-primary);
+}
+
+.calendarCard {
+  background: var(--color-surface-card);
+  border-radius: 24px;
+  padding: var(--space-5) var(--space-4);
+  border: 1px solid var(--color-border-card);
+  box-shadow: var(--shadow-card);
+}
+
+/* Modal */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: var(--space-4);
+}
+
+.dateModal {
+  background: var(--color-surface-card);
+  border-radius: 24px;
+  padding: var(--space-6);
+  width: 100%;
+  max-width: 400px;
+  border: 1px solid var(--color-border-card);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.dateModal h3 {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-6);
+  font-weight: 600;
+}
+
+.recordList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.recordItem {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: var(--space-3) var(--space-4);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 12px;
+  border: 1px solid transparent;
+}
+
+.recordItemSafe {
+  background: var(--color-safe-bg);
+  border-color: rgba(110, 231, 183, 0.2);
+}
+
+.recordItemDanger {
+  background: var(--color-danger-bg);
+  border-color: rgba(253, 164, 175, 0.2);
+}
+
+.statusDot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.presentDot {
+  background: var(--color-success);
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.4);
+}
+
+.absentDot {
+  background: var(--color-danger);
+  box-shadow: 0 0 8px rgba(248, 113, 113, 0.4);
+}
+
+.recordInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.recordSubject {
+  font-weight: 500;
+  font-size: 0.95rem;
+}
+
+.recordTime {
+  font-size: 0.8rem;
+  color: #85858D;
+}
+
+.presentText {
+  color: var(--color-success);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.absentText {
+  color: var(--color-danger);
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.closeModalBtn {
+  width: 100%;
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.05);
+  border: none;
+  border-radius: 12px;
+  color: #fff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.closeModalBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}

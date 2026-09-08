@@ -11,7 +11,11 @@ public interface AttendanceRecordRepository extends JpaRepository<AttendanceReco
 
     List<AttendanceRecord> findBySubjectIdAndUserIdOrderByOccurredAtDesc(Long subjectId, Long userId);
 
+    Optional<AttendanceRecord> findFirstBySubjectIdAndUserIdAndStatusOrderByOccurredAtDesc(Long subjectId, Long userId, AttendanceRecord.AttendanceStatus status);
+
     Optional<AttendanceRecord> findByIdAndUserId(Long id, Long userId);
 
     void deleteBySubjectId(Long subjectId);
+
+    List<AttendanceRecord> findByUserIdOrderByOccurredAtDesc(Long userId);
 }

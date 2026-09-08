@@ -6,7 +6,6 @@ import { api } from '../lib/api';
 import { formatPercentage, generateIdempotencyKey } from '../lib/utils';
 import type { SubjectResponse, AttendanceRecordResponse } from '../types';
 import Toast from '../components/Toast';
-import Calendar from '../components/Calendar';
 import styles from './SubjectDetail.module.css';
 
 export default function SubjectDetailPage() {
@@ -232,20 +231,7 @@ export default function SubjectDetailPage() {
         {/* History & Calendar */}
         {history.length > 0 && (
           <div className={styles.historySection}>
-            <div className={styles.calendarWrapper}>
-              <h2 className={styles.historyTitle}>Attendance Calendar</h2>
-              <Calendar 
-                history={history} 
-                onDateClick={(date, records) => {
-                  if (records.length > 0) {
-                    const status = records.map(r => r.status === 'PRESENT' ? 'Attended' : 'Missed').join(', ');
-                    setToast(`${date.toLocaleDateString('en-IN', { month: 'short', day: 'numeric' })}: ${status}`);
-                  }
-                }} 
-              />
-            </div>
-
-            <h2 className={styles.historyTitle} style={{ marginTop: 'var(--space-6)' }}>Recent History</h2>
+            <h2 className={styles.historyTitle}>Recent History</h2>
             <div className={styles.historyList}>
               {history.slice(0, 20).map(record => (
                 <div key={record.id} className={styles.historyItem}>

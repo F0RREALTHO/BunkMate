@@ -17,10 +17,11 @@
 
 /* Clickable Content Area */
 .content {
+  box-sizing: border-box;
   background: transparent;
   border: none;
   text-align: left;
-  padding: var(--space-6);
+  padding: var(--space-5);
   padding-bottom: var(--space-4);
   cursor: pointer;
   outline: none;
@@ -65,7 +66,7 @@
 }
 
 .pct {
-  font-size: 2.25rem; /* ~36px */
+  font-size: 2rem; /* ~32px */
   font-weight: 700;
   color: #FFFFFF;
   letter-spacing: -0.02em;
@@ -138,20 +139,33 @@
   opacity: 0.8;
 }
 
-/* Bottom Row: Ratio & Toggle */
-.bottomRow {
+/* Bottom Row: Controls Grid */
+.controlsGrid {
+  box-sizing: border-box;
   display: flex;
   justify-content: space-between;
-  align-items: flex-end;
-  padding: 0 var(--space-6) var(--space-6) var(--space-6);
+  align-items: center;
+  padding: 0 var(--space-5) var(--space-5) var(--space-5);
+  width: 100%;
 }
 
-.ratio {
-  font-size: 0.875rem;
+.controlGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.controlGroup:last-child {
+  align-items: flex-end;
+}
+
+.controlLabel {
+  font-size: 0.75rem;
   color: #85858D;
-  font-variant-numeric: tabular-nums;
-  font-weight: 500;
-  padding-bottom: 6px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 0 4px;
 }
 
 /* Signature Toggle Control */
@@ -164,12 +178,26 @@
   gap: 4px;
 }
 
+.toggleDivider {
+  width: 1px;
+  height: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 0 2px;
+}
+
+.toggleDividerDanger {
+  width: 1px;
+  height: 16px;
+  background: rgba(239, 68, 68, 0.2);
+  margin: 0 2px;
+}
+
 .btnMinus, .btnPlus {
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
@@ -194,6 +222,25 @@
 
 .btnPlus:hover:not(:disabled) {
   background: #FFFFFF;
+  transform: scale(1.05);
+}
+
+.btnMinusDanger {
+  color: #FCA5A5;
+}
+
+.btnMinusDanger:hover:not(:disabled) {
+  background: rgba(239, 68, 68, 0.1);
+  color: #FECACA;
+}
+
+.btnPlusDanger {
+  background: #EF4444;
+  color: #FFFFFF;
+}
+
+.btnPlusDanger:hover:not(:disabled) {
+  background: #DC2626;
   transform: scale(1.05);
 }
 

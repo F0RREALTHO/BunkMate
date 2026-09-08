@@ -32,6 +32,7 @@ export interface DashboardResponse {
 export interface AttendanceRecordResponse {
   id: number;
   subjectId: number;
+  subjectName?: string;
   status: 'PRESENT' | 'ABSENT';
   occurredAt: string;
   idempotencyKey: string;

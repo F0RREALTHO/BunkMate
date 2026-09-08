@@ -28,7 +28,7 @@ public class User {
     private String googleSubjectId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "auth_provider", nullable = false)
+    @Column(name = "auth_provider")
     @Builder.Default
     private AuthProvider authProvider = AuthProvider.LOCAL;
 

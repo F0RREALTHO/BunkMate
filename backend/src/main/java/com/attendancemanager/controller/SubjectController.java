@@ -69,6 +69,12 @@ public class SubjectController {
         return ResponseEntity.ok(attendanceService.undoAttendance(id, recordId, getUserId(auth)));
     }
 
+    @DeleteMapping("/{id}/attendance/latest")
+    public ResponseEntity<SubjectResponse> undoLatestAttendance(Authentication auth,
+            @PathVariable Long id, @RequestParam String status) {
+        return ResponseEntity.ok(attendanceService.undoLatestAttendance(id, getUserId(auth), status));
+    }
+
     @GetMapping("/{id}/attendance")
     public ResponseEntity<List<AttendanceRecordResponse>> history(Authentication auth,
             @PathVariable Long id) {

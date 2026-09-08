@@ -9,6 +9,7 @@ import java.time.Instant;
 public class AttendanceRecordResponse {
     private Long id;
     private Long subjectId;
+    private String subjectName;
     private String status;
     private Instant occurredAt;
     private String idempotencyKey;

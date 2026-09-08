@@ -118,6 +118,12 @@ class ApiClient {
     });
   }
 
+  async undoLatestAttendance(subjectId: number, status: 'PRESENT' | 'ABSENT'): Promise<SubjectResponse> {
+    return this.request(`/subjects/${subjectId}/attendance/latest?status=${status}`, {
+      method: 'DELETE',
+    });
+  }
+
   async undoAttendance(subjectId: number, recordId: number): Promise<SubjectResponse> {
     return this.request(`/subjects/${subjectId}/attendance/${recordId}`, {
       method: 'DELETE',
@@ -126,6 +132,10 @@ class ApiClient {
 
   async getHistory(subjectId: number): Promise<AttendanceRecordResponse[]> {
     return this.request(`/subjects/${subjectId}/attendance`);
+  }
+
+  async getAllHistory(): Promise<AttendanceRecordResponse[]> {
+    return this.request('/history');
   }
 }
 

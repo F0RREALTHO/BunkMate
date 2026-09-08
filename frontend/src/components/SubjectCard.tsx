@@ -12,6 +12,11 @@ interface Props {
     status: 'PRESENT' | 'ABSENT',
     onOptimistic: (updated: SubjectResponse) => void
   ) => void;
+  onUndo: (
+    subjectId: number,
+    status: 'PRESENT' | 'ABSENT',
+    onOptimistic: (updated: SubjectResponse) => void
+  ) => void;
   onClick: () => void;
 }
 
@@ -52,19 +57,14 @@ const ChalkDust = ({ triggerKey }: { triggerKey: number }) => {
 
 export default function SubjectCard({ subject, onAttendance, onClick }: Props) {
   const [optimistic, setOptimistic] = useState(subject);
-  const [busy, setBusy] = useState(false);
   const [actionCount, setActionCount] = useState(0);
-  const cooldownRef = useRef(false);
   const shouldReduceMotion = useReducedMotion();
 
-  if (subject.updatedAt !== optimistic.updatedAt && !busy) {
+  if (subject.updatedAt !== optimistic.updatedAt) {
     setOptimistic(subject);
   }
 
   const handleAction = (status: 'PRESENT' | 'ABSENT') => {
-    if (cooldownRef.current || busy) return;
-    cooldownRef.current = true;
-    setBusy(true);
     setActionCount(c => c + 1);
 
     const newAttended = status === 'PRESENT'
@@ -83,15 +83,41 @@ export default function SubjectCard({ subject, onAttendance, onClick }: Props) {
     }));
 
     onAttendance(subject.id, status, (updated) => {
-      setOptimistic(updated);
-      setBusy(false);
-      setTimeout(() => { cooldownRef.current = false; }, 200);
+      // Only update if the incoming data is newer than our optimistic state
+      if (updated.updatedAt > optimistic.updatedAt) {
+        setOptimistic(updated);
+      }
     });
+  };
 
-    setTimeout(() => {
-      cooldownRef.current = false;
-      setBusy(false);
-    }, 3000);
+  const handleUndoAction = (status: 'PRESENT' | 'ABSENT') => {
+    // Prevent undo if numbers would go negative or if no records of that type exist
+    const currentMissed = optimistic.totalClasses - optimistic.attendedClasses;
+    if (status === 'PRESENT' && optimistic.attendedClasses <= 0) return;
+    if (status === 'ABSENT' && currentMissed <= 0) return;
+
+    setActionCount(c => c + 1);
+
+    const newAttended = status === 'PRESENT'
+      ? optimistic.attendedClasses - 1
+      : optimistic.attendedClasses;
+    const newTotal = optimistic.totalClasses - 1;
+    const newPct = newTotal > 0
+      ? Math.round((newAttended / newTotal) * 1000) / 10
+      : null;
+
+    setOptimistic(prev => ({
+      ...prev,
+      attendedClasses: newAttended,
+      totalClasses: newTotal,
+      attendancePercentage: newPct,
+    }));
+
+    onUndo(subject.id, status, (updated) => {
+      if (updated.updatedAt > optimistic.updatedAt) {
+        setOptimistic(updated);
+      }
+    });
   };
 
   let decisionValue = '';
@@ -165,35 +191,57 @@ export default function SubjectCard({ subject, onAttendance, onClick }: Props) {
         </div>
       </button>
 
-      {/* Bottom: Ratio & Toggle */}
-      <div className={styles.bottomRow}>
-        <div className={styles.ratio}>
-          {optimistic.attendedClasses} / {optimistic.totalClasses}
+      {/* Bottom: Undo & Toggle Controls */}
+      <div className={styles.controlsGrid}>
+        
+        <div className={styles.controlGroup}>
+          <span className={styles.controlLabel}>Attended ({optimistic.attendedClasses})</span>
+          <div className={styles.toggle}>
+            <motion.button
+              className={styles.btnMinus}
+              onClick={(e) => { e.stopPropagation(); handleUndoAction('PRESENT'); }}
+              disabled={optimistic.attendedClasses <= 0}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
+              aria-label="Undo Attended"
+            >
+              <Minus size={18} strokeWidth={2.5} />
+            </motion.button>
+            <div className={styles.toggleDivider} />
+            <motion.button
+              className={styles.btnPlus}
+              onClick={(e) => { e.stopPropagation(); handleAction('PRESENT'); }}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
+              aria-label="Mark Attended"
+            >
+              <Plus size={18} strokeWidth={2.5} />
+            </motion.button>
+          </div>
         </div>
 
-        <div className={styles.toggle}>
-          <motion.button
-            className={styles.btnMinus}
-            onClick={(e) => { e.stopPropagation(); handleAction('ABSENT'); }}
-            disabled={busy}
-            whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
-            aria-label="Mark class absent"
-          >
-            <Minus size={20} strokeWidth={2.5} />
-          </motion.button>
-          
-          <div className={styles.toggleDivider} />
-
-          <motion.button
-            className={styles.btnPlus}
-            onClick={(e) => { e.stopPropagation(); handleAction('PRESENT'); }}
-            disabled={busy}
-            whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
-            aria-label="Mark class attended"
-          >
-            <Plus size={20} strokeWidth={2.5} />
-          </motion.button>
+        <div className={styles.controlGroup}>
+          <span className={styles.controlLabel}>Missed ({optimistic.totalClasses - optimistic.attendedClasses})</span>
+          <div className={styles.toggle}>
+            <motion.button
+              className={`${styles.btnMinus} ${styles.btnMinusDanger}`}
+              onClick={(e) => { e.stopPropagation(); handleUndoAction('ABSENT'); }}
+              disabled={(optimistic.totalClasses - optimistic.attendedClasses) <= 0}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
+              aria-label="Undo Missed"
+            >
+              <Minus size={18} strokeWidth={2.5} />
+            </motion.button>
+            <div className={styles.toggleDividerDanger} />
+            <motion.button
+              className={`${styles.btnPlus} ${styles.btnPlusDanger}`}
+              onClick={(e) => { e.stopPropagation(); handleAction('ABSENT'); }}
+              whileTap={shouldReduceMotion ? undefined : { scale: 0.95 }}
+              aria-label="Mark Missed"
+            >
+              <Plus size={18} strokeWidth={2.5} />
+            </motion.button>
+          </div>
         </div>
+
       </div>
     </motion.div>
   );

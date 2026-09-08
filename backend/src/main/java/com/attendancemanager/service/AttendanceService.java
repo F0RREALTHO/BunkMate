@@ -110,19 +110,53 @@ public class AttendanceService {
         return subjectService.getSubject(subjectId, userId);
     }
 
+    @Transactional
+    public SubjectResponse undoLatestAttendance(Long subjectId, Long userId, String statusStr) {
+        subjectService.findOwnedSubject(subjectId, userId);
+        AttendanceStatus status = AttendanceStatus.valueOf(statusStr);
+        
+        AttendanceRecord latestRecord = recordRepository.findFirstBySubjectIdAndUserIdAndStatusOrderByOccurredAtDesc(subjectId, userId, status)
+                .orElseThrow(() -> new ResourceNotFoundException("No " + statusStr + " record found to undo"));
+                
+        return undoAttendance(subjectId, latestRecord.getId(), userId);
+    }
+
     @Transactional(readOnly = true)
     public List<AttendanceRecordResponse> getHistory(Long subjectId, Long userId) {
-        subjectService.findOwnedSubject(subjectId, userId);
+        var subject = subjectService.findOwnedSubject(subjectId, userId);
         return recordRepository.findBySubjectIdAndUserIdOrderByOccurredAtDesc(subjectId, userId)
                 .stream()
                 .map(r -> AttendanceRecordResponse.builder()
                         .id(r.getId())
                         .subjectId(r.getSubjectId())
+                        .subjectName(subject.getName())
                         .status(r.getStatus().name())
                         .occurredAt(r.getOccurredAt())
                         .idempotencyKey(r.getIdempotencyKey())
                         .build())
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public List<AttendanceRecordResponse> getAllHistory(Long userId) {
+        var subjects = subjectRepository.findByUserIdOrderByCreatedAtDesc(userId);
+        var subjectMap = subjects.stream()
+                .collect(java.util.stream.Collectors.toMap(
+                    com.attendancemanager.entity.Subject::getId, 
+                    com.attendancemanager.entity.Subject::getName
+                ));
+                
+        return recordRepository.findByUserIdOrderByOccurredAtDesc(userId)
+                .stream()
+                .map(r -> AttendanceRecordResponse.builder()
+                        .id(r.getId())
+                        .subjectId(r.getSubjectId())
+                        .subjectName(subjectMap.getOrDefault(r.getSubjectId(), "Unknown Subject"))
+                        .status(r.getStatus().name())
+                        .occurredAt(r.getOccurredAt())
+                        .idempotencyKey(r.getIdempotencyKey())
+                        .build())
+                .collect(java.util.stream.Collectors.toList());
     }
 
     private void checkRateLimits(Long subjectId, Long userId) {
