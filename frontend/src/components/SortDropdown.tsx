@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ArrowUpAZ, ArrowDownZA, Check, GraduationCap, XOctagon, TrendingUp, TrendingDown, Minus } from 'lucide-react';
+import { ChevronDown, Check, GraduationCap, XOctagon, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import styles from './SortDropdown.module.css';
 
 export type SortOption = 'default' | 'pct-asc' | 'pct-desc' | 'attended-desc' | 'missed-desc';

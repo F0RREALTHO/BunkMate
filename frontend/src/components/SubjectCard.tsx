@@ -1,5 +1,5 @@
-import { useState, useRef, useEffect } from 'react';
-import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { useState, useEffect } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { Minus, Plus } from 'lucide-react';
 import type { SubjectResponse } from '../types';
 import { formatPercentage } from '../lib/utils';
@@ -25,15 +25,16 @@ const ChalkDust = ({ triggerKey }: { triggerKey: number }) => {
   const shouldReduceMotion = useReducedMotion();
 
   useEffect(() => {
-    if (triggerKey === 0 || shouldReduceMotion) return;
-    const newParticles = Array.from({ length: 3 }).map((_, i) => ({
-      id: Date.now() + i,
-      x: (Math.random() - 0.5) * 30,
-      y: (Math.random() - 0.5) * 30,
-    }));
-    setParticles(newParticles);
-    const t = setTimeout(() => setParticles([]), 400);
-    return () => clearTimeout(t);
+    if (triggerKey > 0 && !shouldReduceMotion) {
+      const newParticles = Array.from({ length: 12 }).map((_, i) => ({
+        id: Date.now() + i,
+        x: (Math.random() - 0.5) * 60,
+        y: (Math.random() - 0.5) * 40 - 20,
+      }));
+      setParticles(newParticles);
+      const timer = setTimeout(() => setParticles([]), 400);
+      return () => clearTimeout(timer);
+    }
   }, [triggerKey, shouldReduceMotion]);
 
   if (shouldReduceMotion) return null;
@@ -55,7 +56,7 @@ const ChalkDust = ({ triggerKey }: { triggerKey: number }) => {
   );
 };
 
-export default function SubjectCard({ subject, onAttendance, onClick }: Props) {
+export default function SubjectCard({ subject, onAttendance, onUndo, onClick }: Props) {
   const [optimistic, setOptimistic] = useState(subject);
   const [actionCount, setActionCount] = useState(0);
   const shouldReduceMotion = useReducedMotion();
