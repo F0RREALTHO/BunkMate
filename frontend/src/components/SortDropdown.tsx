@@ -1,9 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, ArrowUpAZ, ArrowDownZA, Check, GraduationCap, XOctagon, TrendingUp, TrendingDown } from 'lucide-react';
+import { ChevronDown, ArrowUpAZ, ArrowDownZA, Check, GraduationCap, XOctagon, TrendingUp, TrendingDown, Minus } from 'lucide-react';
 import styles from './SortDropdown.module.css';
 
-export type SortOption = 'pct-asc' | 'pct-desc' | 'attended-desc' | 'missed-desc';
+export type SortOption = 'default' | 'pct-asc' | 'pct-desc' | 'attended-desc' | 'missed-desc';
 
 interface SortDropdownProps {
   value: SortOption;
@@ -25,6 +25,7 @@ export default function SortDropdown({ value, onChange }: SortDropdownProps) {
   }, []);
 
   const options = [
+    { id: 'default', label: 'Default Order', icon: Minus },
     { id: 'pct-asc', label: 'Attendance (Low to High)', icon: TrendingDown },
     { id: 'pct-desc', label: 'Attendance (High to Low)', icon: TrendingUp },
     { id: 'attended-desc', label: 'Most Classes Attended', icon: GraduationCap },

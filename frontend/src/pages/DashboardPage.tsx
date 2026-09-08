@@ -23,7 +23,7 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
   const [toast, setToast] = useState<{ message: string } | null>(null);
-  const [sortBy, setSortBy] = useState<SortOption>('pct-asc');
+  const [sortBy, setSortBy] = useState<SortOption>('default');
   
   // Date/Time State
   const [currentTime, setCurrentTime] = useState(new Date());
