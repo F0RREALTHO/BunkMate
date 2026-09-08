@@ -9,13 +9,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
+        uses: appleboy/ssh-action@v1.2.2
         with:
           host: ${{ secrets.GCP_HOST }}
           username: ${{ secrets.GCP_USERNAME }}
           key: ${{ secrets.GCP_SSH_KEY }}
+          command_timeout: 10m
           script: |
-            cd ~/BunkMate/backend
+            cd ~/BunkMate
             git checkout main
             git pull origin main
-            docker compose up --build -d
+            cd backend
+            docker compose up --build --no-cache -d

@@ -46,16 +46,27 @@ export default function SubjectDetailPage() {
   }, [subjectId, navigate]);
 
   const handleAttendance = async (status: 'PRESENT' | 'ABSENT') => {
-    if (busy) return;
+    if (busy || !subject) return;
     setBusy(true);
+
+    // Optimistic update: show new numbers instantly
+    const prevSubject = subject;
+    const isPresent = status === 'PRESENT';
+    setSubject(s => s ? {
+      ...s,
+      attendedClasses: s.attendedClasses + (isPresent ? 1 : 0),
+      totalClasses: s.totalClasses + 1,
+    } : s);
+
     try {
       const key = generateIdempotencyKey();
       const updated = await api.recordAttendance(subjectId, status, key);
-      setSubject(updated);
-      const h = await api.getHistory(subjectId);
-      setHistory(h);
-      setToast(status === 'PRESENT' ? 'Marked as attended' : 'Marked as missed');
+      setSubject(updated); // Replace with server truth
+      // Refresh history in background (non-blocking)
+      api.getHistory(subjectId).then(setHistory).catch(() => {});
+      setToast(isPresent ? 'Marked as attended' : 'Marked as missed');
     } catch (err: any) {
+      setSubject(prevSubject); // Rollback on error
       setToast(err.message || 'Failed to update');
     } finally {
       setBusy(false);
