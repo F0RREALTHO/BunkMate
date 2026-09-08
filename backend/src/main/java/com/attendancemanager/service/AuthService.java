@@ -63,4 +63,11 @@ public class AuthService {
         return userRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
     }
+
+    @Transactional
+    public User updateUser(Long id, com.attendancemanager.dto.request.UpdateUserRequest request) {
+        User user = getUserById(id);
+        user.setName(request.getName().trim());
+        return userRepository.save(user);
+    }
 }

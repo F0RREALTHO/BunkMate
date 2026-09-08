@@ -67,6 +67,13 @@ class ApiClient {
     return this.request('/auth/me');
   }
 
+  async updateMe(name: string): Promise<{ id: number; name: string; email: string }> {
+    return this.request('/auth/me', {
+      method: 'PUT',
+      body: JSON.stringify({ name }),
+    });
+  }
+
   // Dashboard
   async getDashboard(): Promise<DashboardResponse> {
     return this.request('/subjects');

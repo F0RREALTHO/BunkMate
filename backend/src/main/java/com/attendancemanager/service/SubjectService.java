@@ -55,6 +55,8 @@ public class SubjectService {
                 .name(request.getName().trim())
                 .code(request.getCode() != null ? request.getCode().trim() : null)
                 .requiredPercentage(request.getRequiredPercentage())
+                .attendedClasses(request.getAttendedClasses() != null ? request.getAttendedClasses() : 0)
+                .totalClasses(request.getTotalClasses() != null ? request.getTotalClasses() : 0)
                 .build();
         subject = subjectRepository.save(subject);
         return toResponse(subject);

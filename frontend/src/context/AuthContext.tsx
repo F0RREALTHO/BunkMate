@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
 import { api } from '../lib/api';
 
 interface AuthState {
@@ -11,7 +11,8 @@ interface AuthState {
 interface AuthContextType extends AuthState {
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
-  loginWithToken: (token: string) => void;
+  loginWithToken: (token: string) => Promise<void>;
+  updateName: (name: string) => Promise<void>;
   logout: () => void;
 }
 
@@ -52,22 +53,40 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setState({ isAuthenticated: true, isLoading: false, userName: res.name, userEmail: res.email });
   };
 
-  const loginWithToken = (token: string) => {
-    // Basic JWT decode to extract email (payload is 2nd part of JWT)
+  const loginWithToken = useCallback(async (token: string) => {
     try {
+      // Safely decode Base64 URL payload
       const payloadBase64 = token.split('.')[1];
-      const decodedJson = atob(payloadBase64);
+      const base64 = payloadBase64.replace(/-/g, '+').replace(/_/g, '/');
+      const pad = base64.length % 4;
+      const paddedBase64 = pad ? base64 + '='.repeat(4 - pad) : base64;
+      const decodedJson = atob(paddedBase64);
       const payload = JSON.parse(decodedJson);
       const email = payload.email || '';
       
       localStorage.setItem('token', token);
-      localStorage.setItem('userName', 'Student'); // default for OAuth
       localStorage.setItem('userEmail', email);
       
-      setState({ isAuthenticated: true, isLoading: false, userName: 'Student', userEmail: email });
+      // Fetch actual user details instead of defaulting to 'Student'
+      let name = 'Student';
+      try {
+        const user = await api.getMe();
+        name = user.name;
+        localStorage.setItem('userName', name);
+      } catch (err) {
+        console.error("Failed to fetch user details", err);
+      }
+      
+      setState({ isAuthenticated: true, isLoading: false, userName: name, userEmail: email });
     } catch (e) {
       console.error("Invalid token", e);
     }
+  }, []);
+
+  const updateName = async (name: string) => {
+    const res = await api.updateMe(name);
+    localStorage.setItem('userName', res.name);
+    setState(s => ({ ...s, userName: res.name }));
   };
 
   const logout = () => {
@@ -78,7 +97,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <AuthContext.Provider value={{ ...state, login, register, loginWithToken, logout }}>
+    <AuthContext.Provider value={{ ...state, login, register, loginWithToken, updateName, logout }}>
       {children}
     </AuthContext.Provider>
   );

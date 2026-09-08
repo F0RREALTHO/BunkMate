@@ -13,6 +13,8 @@ export default function AddSubjectModal({ onClose, onCreated }: Props) {
   const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [requiredPercentage, setRequiredPercentage] = useState('75');
+  const [attended, setAttended] = useState('0');
+  const [missed, setMissed] = useState('0');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
@@ -30,10 +32,14 @@ export default function AddSubjectModal({ onClose, onCreated }: Props) {
     setError('');
     setLoading(true);
     try {
+      const attendedNum = parseInt(attended) || 0;
+      const missedNum = parseInt(missed) || 0;
       await api.createSubject({
         name: name.trim(),
         code: code.trim() || undefined,
         requiredPercentage: parseFloat(requiredPercentage) || 75,
+        attendedClasses: attendedNum,
+        totalClasses: attendedNum + missedNum,
       });
       onCreated();
     } catch (err: any) {
@@ -120,6 +126,33 @@ export default function AddSubjectModal({ onClose, onCreated }: Props) {
                   step="1"
                 />
                 <span className={styles.pctSign}>%</span>
+              </div>
+            </div>
+
+            <div className={styles.splitRow}>
+              <div className={styles.field}>
+                <label htmlFor="subject-attended" className={styles.label}>Classes attended</label>
+                <input
+                  id="subject-attended"
+                  type="number"
+                  value={attended}
+                  onChange={e => setAttended(e.target.value)}
+                  className={styles.input}
+                  min="0"
+                  step="1"
+                />
+              </div>
+              <div className={styles.field}>
+                <label htmlFor="subject-missed" className={styles.label}>Classes missed</label>
+                <input
+                  id="subject-missed"
+                  type="number"
+                  value={missed}
+                  onChange={e => setMissed(e.target.value)}
+                  className={styles.input}
+                  min="0"
+                  step="1"
+                />
               </div>
             </div>
 

@@ -8,16 +8,19 @@ export default function OAuth2RedirectHandler() {
   const location = useLocation();
 
   useEffect(() => {
-    const params = new URLSearchParams(location.search);
-    const token = params.get('token');
+    const handleToken = async () => {
+      const params = new URLSearchParams(location.search);
+      const token = params.get('token');
 
-    if (token) {
-      loginWithToken(token);
-      navigate('/', { replace: true });
-    } else {
-      // If no token, redirect back to login with an error
-      navigate('/login?error=oauth2', { replace: true });
-    }
+      if (token) {
+        await loginWithToken(token);
+        navigate('/', { replace: true });
+      } else {
+        // If no token, redirect back to login with an error
+        navigate('/login?error=oauth2', { replace: true });
+      }
+    };
+    handleToken();
   }, [location, loginWithToken, navigate]);
 
   return (

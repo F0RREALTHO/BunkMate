@@ -40,4 +40,15 @@ public class AuthController {
                 "email", user.getEmail()
         ));
     }
+
+    @PutMapping("/me")
+    public ResponseEntity<Map<String, Object>> updateMe(Authentication authentication, @Valid @RequestBody com.attendancemanager.dto.request.UpdateUserRequest request) {
+        Long userId = (Long) authentication.getPrincipal();
+        var user = authService.updateUser(userId, request);
+        return ResponseEntity.ok(Map.of(
+                "id", user.getId(),
+                "name", user.getName(),
+                "email", user.getEmail()
+        ));
+    }
 }

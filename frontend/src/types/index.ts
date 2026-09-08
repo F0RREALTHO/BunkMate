@@ -48,6 +48,8 @@ export interface CreateSubjectRequest {
   name: string;
   code?: string;
   requiredPercentage: number;
+  attendedClasses?: number;
+  totalClasses?: number;
 }
 
 export interface UpdateSubjectRequest {

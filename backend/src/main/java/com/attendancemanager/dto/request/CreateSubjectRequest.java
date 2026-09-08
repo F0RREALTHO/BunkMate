@@ -16,4 +16,10 @@ public class CreateSubjectRequest {
     @DecimalMin(value = "0.0", message = "Required percentage must be at least 0")
     @DecimalMax(value = "100.0", message = "Required percentage must be at most 100")
     private BigDecimal requiredPercentage = new BigDecimal("75.00");
+
+    @Min(value = 0, message = "Attended classes cannot be negative")
+    private Integer attendedClasses = 0;
+
+    @Min(value = 0, message = "Total classes cannot be negative")
+    private Integer totalClasses = 0;
 }

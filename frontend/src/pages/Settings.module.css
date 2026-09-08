@@ -103,5 +103,54 @@
 }
 
 .logoutBtn:hover {
-  background: var(--color-danger-subtle);
+  background: var(--color-danger-bg);
+}
+
+.rowContent {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.editRow {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-top: 2px;
+}
+
+.editInput {
+  flex: 1;
+  background: transparent;
+  border: 1px solid var(--color-border-subtle);
+  color: var(--color-text-primary);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+  font-size: var(--text-base);
+  outline: none;
+}
+
+.editInput:focus {
+  border-color: var(--color-interaction);
+}
+
+.actionBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-1);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  background: var(--color-surface-overlay);
+  transition: all var(--transition-fast);
+}
+
+.actionBtn:hover {
+  color: var(--color-text-primary);
+  background: var(--color-border-subtle);
+}
+
+.actionBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }

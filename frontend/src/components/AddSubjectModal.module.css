@@ -156,3 +156,11 @@
     box-shadow: var(--shadow-lg);
   }
 }
+
+.splitRow {
+  display: flex;
+  gap: var(--space-4);
+}
+.splitRow > .field {
+  flex: 1;
+}
