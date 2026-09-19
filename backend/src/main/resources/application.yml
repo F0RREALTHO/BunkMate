@@ -49,3 +49,18 @@ app:
     subject:
       max-requests: 5
       window-seconds: 10
+
+  # ──────────────────────────────────────────────────────────────────
+  # Supabase Pause Prevention
+  # Keeps the Supabase free-tier project active by pinging the DB
+  # on a regular schedule.  Free-tier projects pause after 7 days
+  # of inactivity.
+  # Inspired by: https://github.com/travisvn/supabase-pause-prevention
+  # ──────────────────────────────────────────────────────────────────
+  supabase-pause-prevention:
+    # Set to false to disable the keep-alive scheduler entirely
+    enabled: ${SUPABASE_KEEP_ALIVE_ENABLED:true}
+    # Cron expression (Spring format: second minute hour day month weekday)
+    # Default: 5:00 AM every Monday, Wednesday, and Friday
+    # Adjust to suit your inactivity window (must be < 7 days apart)
+    cron: ${SUPABASE_KEEP_ALIVE_CRON:0 0 5 * * MON,WED,FRI}
